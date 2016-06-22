@@ -15,7 +15,7 @@ namespace PetrolPriceMonitor.Views
 
             if (viewModel == null)
             {
-                PushAsync(new ContentPage());
+                PushAsync(null);
 
                 return;
             }
