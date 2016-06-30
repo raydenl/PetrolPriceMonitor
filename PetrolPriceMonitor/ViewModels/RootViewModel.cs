@@ -17,6 +17,7 @@ namespace PetrolPriceMonitor.ViewModels
 
             ViewModels.Add(container.Resolve<HomeViewModel>());
             ViewModels.Add(container.Resolve<SearchViewModel>());
+            ViewModels.Add(container.Resolve<ProfileViewModel>());
         }
     }
 }

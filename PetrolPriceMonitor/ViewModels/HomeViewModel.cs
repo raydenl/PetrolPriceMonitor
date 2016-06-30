@@ -11,20 +11,28 @@ namespace PetrolPriceMonitor.ViewModels
 {
     public class HomeViewModel : ViewModelBase
     {
-        private INavigator _navigator;
+        private INavigate _navigate;
+        private IAuthenticate _authenticate;
 
-        public ICommand Blah { protected set; get; }
+        public ICommand LogOutCommand { protected set; get; }
 
-        public HomeViewModel(INavigator navigator)
+        public HomeViewModel(INavigate navigate, IAuthenticate authenticate)
         {
             Title = "Home";
 
-            _navigator = navigator;
+            _navigate = navigate;
+            _authenticate = authenticate;
 
-            Blah = new Command(() =>
-            {
-
-            });
+            LogOutCommand = new Command(LogOut, CanLogOut);
         }
+
+        private void LogOut()
+        {
+            _authenticate.LogOut();
+
+            _navigate.SetNavigationRoot<LogInViewModel>();
+        }
+
+        private bool CanLogOut() => true;
     }
 }

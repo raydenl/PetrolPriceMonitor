@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using PetrolPriceMonitor.Factories;
+using PetrolPriceMonitor.Services;
 using PetrolPriceMonitor.ViewModels;
 using PetrolPriceMonitor.Views;
 using Xamarin.Forms;
@@ -14,13 +15,7 @@ namespace PetrolPriceMonitor.Bootstrapping
         {
             _application = application;
         }
-
-        protected override void ConfigureContainer(ContainerBuilder builder)
-        {
-            base.ConfigureContainer(builder);
-            builder.RegisterModule<AutofacModule>();
-        }
-
+        
         protected override void RegisterViews(IViewFactory viewFactory)
         {
             viewFactory.Register<LogInViewModel, LogInView>();
@@ -28,16 +23,14 @@ namespace PetrolPriceMonitor.Bootstrapping
             viewFactory.Register<HomeViewModel, HomeView>();
             viewFactory.Register<RootViewModel, RootView>();
             viewFactory.Register<SearchViewModel, SearchView>();
+            viewFactory.Register<ProfileViewModel, ProfileView>();
         }
 
         protected override void ConfigureApplication(IContainer container)
         {
-            // set main page
-            var viewFactory = container.Resolve<IViewFactory>();
-            var mainPage = viewFactory.Resolve<LogInViewModel>();
-            var navigationPage = new NavigationPage(mainPage);
+            var navigate = container.Resolve<INavigate>();
 
-            _application.MainPage = navigationPage;
+            navigate.SetNavigationRoot<LogInViewModel>();
         }
     }
 

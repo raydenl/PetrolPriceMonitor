@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PetrolPriceMonitor.Views.HomeView"
              Title="{Binding Title}">
+  <ContentPage.ToolbarItems>
+    <ToolbarItem Name="Log Out" Command="{Binding LogOutCommand}" />
+  </ContentPage.ToolbarItems>
   <StackLayout>
-    <Label Text="Test"></Label>
-    <Button Text="Blah" HorizontalOptions="Center" Command="{Binding Blah}" />
+    
   </StackLayout>
 </ContentPage>

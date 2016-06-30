@@ -6,12 +6,12 @@ using Xamarin.Forms;
 
 namespace PetrolPriceMonitor.Services
 {
-    public class Navigator : INavigator
+    public class NavigatorService : INavigate
     {
         private readonly Lazy<INavigation> _navigation;
         private readonly IViewFactory _viewFactory;
 
-        public Navigator(Lazy<INavigation> navigation, IViewFactory viewFactory)
+        public NavigatorService(Lazy<INavigation> navigation, IViewFactory viewFactory)
         {
             _navigation = navigation;
             _viewFactory = viewFactory;
@@ -74,6 +74,16 @@ namespace PetrolPriceMonitor.Services
         }
 
         public TViewModel SetRoot<TViewModel>()
+            where TViewModel : class, IViewModel
+        {
+            TViewModel viewModel;
+            var view = _viewFactory.Resolve(out viewModel);
+            Application.Current.MainPage = view;
+
+            return viewModel;
+        }
+
+        public TViewModel SetNavigationRoot<TViewModel>()
             where TViewModel : class, IViewModel
         {
             TViewModel viewModel;

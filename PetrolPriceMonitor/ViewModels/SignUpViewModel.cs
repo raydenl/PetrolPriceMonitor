@@ -6,9 +6,9 @@ namespace PetrolPriceMonitor.ViewModels
 {
     public class SignUpViewModel : ViewModelBase
     {
-        private INavigator _navigator;
+        private INavigate _navigator;
 
-        public SignUpViewModel(INavigator navigator)
+        public SignUpViewModel(INavigate navigator)
         {
             Title = "Sign Up";
 

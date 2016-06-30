@@ -6,18 +6,20 @@ namespace PetrolPriceMonitor.ViewModels
 {
     public class LogInViewModel : ViewModelBase
     {
-        private INavigator _navigator;
+        private INavigate _navigate;
+        private IAuthenticate _authenticate;
 
         public ICommand SignUpCommand { protected set; get; }
         public ICommand LogInCommand { protected set; get; }
         public ICommand FacebookLogInCommand { protected set; get; }
         public ICommand GuestLogInCommand { protected set; get; }
         
-        public LogInViewModel(INavigator navigator)
+        public LogInViewModel(INavigate navigate, IAuthenticate authenticate)
         {
             Title = "Log In";
 
-            _navigator = navigator;
+            _navigate = navigate;
+            _authenticate = authenticate;
 
             SignUpCommand = new Command(SignUp, CanSignUp);
             LogInCommand = new Command(LogIn, CanLogIn);
@@ -27,22 +29,22 @@ namespace PetrolPriceMonitor.ViewModels
         
         private void SignUp()
         {
-            _navigator.PushAsync<SignUpViewModel>();
+            _navigate.PushAsync<SignUpViewModel>();
         }
 
         private void LogIn()
         {
-
+            _authenticate.LogIn("", "");
         }
 
         private void FacebookLogIn()
         {
-
+            _authenticate.LogInUsingFacebook();
         }
 
         private void GuestLogIn()
         {
-            _navigator.SetRoot<RootViewModel>();
+            _navigate.SetRoot<RootViewModel>();
         }
 
         private bool CanSignUp() => true;

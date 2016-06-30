@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace PetrolPriceMonitor.Services
 {
-    public interface INavigator
+    public interface INavigate
     {
         Task<IViewModel> PopAsync();
 
@@ -25,6 +25,9 @@ namespace PetrolPriceMonitor.Services
             where TViewModel : class, IViewModel;
 
         TViewModel SetRoot<TViewModel>()
+            where TViewModel : class, IViewModel;
+
+        TViewModel SetNavigationRoot<TViewModel>()
             where TViewModel : class, IViewModel;
     }
 }

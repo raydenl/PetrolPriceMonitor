@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace PetrolPriceMonitor.ViewModels
 {
-    public class SearchViewModel : ViewModelBase
+    public class ProfileViewModel : ViewModelBase
     {
-        private INavigate _navigator;
-        
-        public SearchViewModel(INavigate navigator)
-        {
-            Title = "Search";
+        private INavigate _navigate;
 
-            _navigator = navigator;
+        public ProfileViewModel(INavigate navigate)
+        {
+            Title = "Profile";
+
+            _navigate = navigate;
         }
     }
 }
