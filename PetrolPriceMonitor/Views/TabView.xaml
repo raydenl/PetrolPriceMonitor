@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PetrolPriceMonitor.Views.TabView"
+             xmlns:v="clr-namespace:PetrolPriceMonitor.Views;assembly=PetrolPriceMonitor">
+  <TabbedPage.Children>
+    <NavigationPage Title="{Binding ViewModels[0].Title}">
+      <x:Arguments>
+        <v:ViewLocatorPage ViewModel="{Binding ViewModels[0]}" />
+      </x:Arguments>
+    </NavigationPage>
+    <NavigationPage Title="{Binding ViewModels[1].Title}">
+      <x:Arguments>
+        <v:ViewLocatorPage ViewModel="{Binding ViewModels[1]}" />
+      </x:Arguments>
+    </NavigationPage>
+    <NavigationPage Title="{Binding ViewModels[2].Title}">
+      <x:Arguments>
+        <v:ViewLocatorPage ViewModel="{Binding ViewModels[2]}" />
+      </x:Arguments>
+    </NavigationPage>
+  </TabbedPage.Children>
+</TabbedPage>

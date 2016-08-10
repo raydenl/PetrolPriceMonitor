@@ -1,15 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<d:ViewBase xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:PetrolPriceMonitor.ViewModels;assembly=PetrolPriceMonitor"
+             xmlns:d="clr-namespace:PetrolPriceMonitor.Views;assembly=PetrolPriceMonitor"
              x:Class="PetrolPriceMonitor.Views.LogInView"
              Title="{Binding Title}">
   <StackLayout>
-  <Button Text="Log in as a guest" HorizontalOptions="Center" Command="{Binding GuestLogInCommand}" />
-  <Button Text="Log in with Facebook" HorizontalOptions="Center" Command="{Binding FacebookLogInCommand}" />
-  <Entry x:Name="Email" Text="{Binding Email}" Keyboard="Email" />
-  <Entry Text="{Binding Password}" IsPassword="True" />
-  <Button Text="Log in" HorizontalOptions="Center" Command="{Binding LogInCommand}" />
-  <Button Text="Sign up" HorizontalOptions="Center" Command="{Binding SignUpCommand}" />
+    <Button Text="Log in as a guest" HorizontalOptions="Center" Command="{Binding GuestLogInCommand}" />
+    <Button Text="Log in with Facebook" HorizontalOptions="Center" Command="{Binding FacebookLogInCommand}" />
+    <Entry x:Name="Email" Text="{Binding Email}" Keyboard="Email" />
+    <Entry Text="{Binding Password}" IsPassword="True" />
+    <Button Text="Log in" HorizontalOptions="Center" Command="{Binding LogInCommand}" />
+    <Button Text="Forgot password?" HorizontalOptions="Center" Command="{Binding ForgotPasswordCommand}" />
+    <Button Text="Sign up" HorizontalOptions="Center" Command="{Binding SignUpCommand}" />
   </StackLayout>
-</ContentPage>
+</d:ViewBase>

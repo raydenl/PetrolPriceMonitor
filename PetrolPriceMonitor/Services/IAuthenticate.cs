@@ -15,6 +15,8 @@ namespace PetrolPriceMonitor.Services
 
         Task<IResponse> SignUp(string email, string password);
 
+        Task<IResponse> ForgotPassword(string email);
+
         bool IsAuthenticated { get; }
     }
 }

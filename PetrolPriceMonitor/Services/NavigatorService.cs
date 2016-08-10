@@ -30,7 +30,7 @@ namespace PetrolPriceMonitor.Services
 
         public async Task<IViewModel> PopModalAsync()
         {
-            Page view = await Navigation.PopAsync();
+            Page view = await Navigation.PopModalAsync();
             return view.BindingContext as IViewModel;
         }
 
@@ -39,21 +39,39 @@ namespace PetrolPriceMonitor.Services
             await Navigation.PopToRootAsync();
         }
 
-        public async Task<TViewModel> PushAsync<TViewModel>(Action<TViewModel> setStateAction = null)
+        public async Task<TViewModel> PushAsync<TViewModel>(Action<TViewModel> setStateAction = null, bool tabbedPage = false)
             where TViewModel : class, IViewModel
         {
             TViewModel viewModel;
             var view = _viewFactory.Resolve(out viewModel, setStateAction);
-            await Navigation.PushAsync(view);
+
+            await PushAsync(view, tabbedPage);
+            
             return viewModel;
         }
 
-        public async Task<TViewModel> PushAsync<TViewModel>(TViewModel viewModel)
+        public async Task<TViewModel> PushAsync<TViewModel>(TViewModel viewModel, bool tabbedPage = false)
             where TViewModel : class, IViewModel
         {
             var view = _viewFactory.Resolve(viewModel);
-            await Navigation.PushAsync(view);
+
+            await PushAsync(view, tabbedPage);
+
             return viewModel;
+        }
+
+        private async Task PushAsync(Page view, bool tabbedPage)
+        {
+            if (!tabbedPage)
+            {
+                await Navigation.PushAsync(view);
+            }
+            else
+            {
+                var tab = _viewFactory.Resolve<TabViewModel>() as TabbedPage;
+
+                await ((NavigationPage)tab.CurrentPage).PushAsync(view);
+            }
         }
 
         public async Task<TViewModel> PushModalAsync<TViewModel>(Action<TViewModel> setStateAction = null)

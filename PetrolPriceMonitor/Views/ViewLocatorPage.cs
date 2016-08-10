@@ -5,28 +5,41 @@ using Xamarin.Forms;
 
 namespace PetrolPriceMonitor.Views
 {
-    public class ViewLocatorPage : NavigationPage
+    public class ViewLocatorPage : ViewBase
     {
+        public static readonly BindableProperty ViewModelProperty =
+        BindableProperty.Create("ViewModel", typeof(IViewModel), typeof(ViewLocatorPage), null);
+
+        public IViewModel ViewModel
+        {
+            get { return (IViewModel)GetValue(ViewModelProperty); }
+            set { SetValue(ViewModelProperty, value); }
+        }
+
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
-
-            var viewModel = BindingContext as IViewModel;
-
-            if (viewModel == null)
+            
+            if (ViewModel == null)
             {
-                PushAsync(null);
+                Content = null;
 
                 return;
             }
             
             var viewFactory = App.Container.Resolve<IViewFactory>();
             
-            var page = viewFactory.Resolve(viewModel);
-            
-            var contentPage = (ContentPage)page;
+            var page = viewFactory.Resolve(ViewModel);
 
-            PushAsync(contentPage);
+            var contentPage = (ContentPage)page;
+            
+            Title = ViewModel.Title;
+            BindingContext = ViewModel;
+            foreach(var toolbarItem in contentPage.ToolbarItems)
+            {
+                ToolbarItems.Add(toolbarItem);
+            }
+            Content = contentPage.Content;
         }
     }
 }

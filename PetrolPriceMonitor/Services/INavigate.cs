@@ -12,10 +12,10 @@ namespace PetrolPriceMonitor.Services
 
         Task PopToRootAsync();
 
-        Task<TViewModel> PushAsync<TViewModel>(Action<TViewModel> setStateAction = null)
+        Task<TViewModel> PushAsync<TViewModel>(Action<TViewModel> setStateAction = null, bool tabbedPage = false)
             where TViewModel : class, IViewModel;
 
-        Task<TViewModel> PushAsync<TViewModel>(TViewModel viewModel)
+        Task<TViewModel> PushAsync<TViewModel>(TViewModel viewModel, bool tabbedPage = false)
             where TViewModel : class, IViewModel;
 
         Task<TViewModel> PushModalAsync<TViewModel>(Action<TViewModel> setStateAction = null)

@@ -13,7 +13,8 @@ namespace PetrolPriceMonitor.ViewModels
         public ICommand LogInCommand { protected set; get; }
         public ICommand FacebookLogInCommand { protected set; get; }
         public ICommand GuestLogInCommand { protected set; get; }
-        
+        public ICommand ForgotPasswordCommand { protected set; get; }
+
         public LogInViewModel(INavigate navigate, IAuthenticate authenticate)
         {
             Title = "Log In";
@@ -25,6 +26,7 @@ namespace PetrolPriceMonitor.ViewModels
             LogInCommand = new Command(LogIn, CanLogIn);
             FacebookLogInCommand = new Command(FacebookLogIn, CanFacebookLogIn);
             GuestLogInCommand = new Command(GuestLogIn, CanGuestLogIn);
+            ForgotPasswordCommand = new Command(ForgotPassword, CanForgotPassword);
         }
         
         private void SignUp()
@@ -44,12 +46,18 @@ namespace PetrolPriceMonitor.ViewModels
 
         private void GuestLogIn()
         {
-            _navigate.SetRoot<RootViewModel>();
+            _navigate.PushModalAsync<TabViewModel>();
+        }
+
+        private void ForgotPassword()
+        {
+            _navigate.PushAsync<ForgotPasswordViewModel>();
         }
 
         private bool CanSignUp() => true;
         private bool CanLogIn() => true;
         private bool CanFacebookLogIn() => true;
         private bool CanGuestLogIn() => true;
+        private bool CanForgotPassword() => true;
     }
 }

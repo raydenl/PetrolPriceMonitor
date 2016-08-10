@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using PetrolPriceMonitor.Factories;
+using PetrolPriceMonitor.Repositories;
 using PetrolPriceMonitor.Services;
 using PetrolPriceMonitor.ViewModels;
 using PetrolPriceMonitor.Views;
@@ -21,14 +22,25 @@ namespace PetrolPriceMonitor.Bootstrapping
                 .As<INavigate>()
                 .SingleInstance();
 
+            builder.RegisterType<LocationService>()
+                .As<ILocate>()
+                .SingleInstance();
+
             // navigation registration
             builder.Register(context =>
                 Application.Current.MainPage.Navigation
             ).SingleInstance();
 
             RegisterPlatformSpecificObjects(builder);
+            RegisterRepositories(builder);
             RegisterViewModels(builder);
             RegisterViews(builder);
+        }
+
+        private void RegisterRepositories(ContainerBuilder builder)
+        {
+            builder.RegisterType<StationRepository>()
+                .As<IStationRepository>();
         }
 
         private void RegisterViewModels(ContainerBuilder builder)
@@ -36,9 +48,11 @@ namespace PetrolPriceMonitor.Bootstrapping
             builder.RegisterType<LogInViewModel>().SingleInstance();
             builder.RegisterType<SignUpViewModel>().SingleInstance();
             builder.RegisterType<HomeViewModel>().SingleInstance();
-            builder.RegisterType<RootViewModel>().SingleInstance();
+            builder.RegisterType<TabViewModel>().SingleInstance();
             builder.RegisterType<SearchViewModel>().SingleInstance();
+            builder.RegisterType<SearchResultsViewModel>().SingleInstance();
             builder.RegisterType<ProfileViewModel>().SingleInstance();
+            builder.RegisterType<ForgotPasswordViewModel>().SingleInstance();
         }
 
         private void RegisterViews(ContainerBuilder builder)
@@ -46,23 +60,26 @@ namespace PetrolPriceMonitor.Bootstrapping
             builder.RegisterType<LogInView>().SingleInstance();
             builder.RegisterType<SignUpView>().SingleInstance();
             builder.RegisterType<HomeView>().SingleInstance();
-            builder.RegisterType<RootView>().SingleInstance();
+            builder.RegisterType<TabView>().SingleInstance();
             builder.RegisterType<SearchView>().SingleInstance();
+            builder.RegisterType<SearchResultsView>().SingleInstance();
             builder.RegisterType<ProfileView>().SingleInstance();
+            builder.RegisterType<ForgotPasswordView>().SingleInstance();
         }
 
         private void RegisterPlatformSpecificObjects(ContainerBuilder builder)
         {
-            builder.RegisterInstance(GetAuthenticateImplementation()).AsImplementedInterfaces();
+            builder.RegisterInstance(GetImplementation<IAuthenticate>()).AsImplementedInterfaces();
+            builder.RegisterInstance(GetImplementation<IDisplayProgress>()).AsImplementedInterfaces();
         }
-
-        private static IAuthenticate GetAuthenticateImplementation()
+        
+        private static T GetImplementation<T>() where T: class
         {
-            var implementation = DependencyService.Get<IAuthenticate>();
+            var implementation = DependencyService.Get<T>();
 
             if (implementation == null)
             {
-                throw new InvalidOperationException($"Missing '{typeof(IAuthenticate).FullName}' implementation. Implementation is required.");
+                throw new InvalidOperationException($"Missing '{typeof(T).FullName}' implementation. Implementation is required.");
             }
 
             return implementation;

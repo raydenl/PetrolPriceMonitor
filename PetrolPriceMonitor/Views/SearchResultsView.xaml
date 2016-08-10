@@ -3,19 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="clr-namespace:PetrolPriceMonitor.Views;assembly=PetrolPriceMonitor"
              xmlns:local="clr-namespace:PetrolPriceMonitor.Converters;assembly=PetrolPriceMonitor"
-             x:Class="PetrolPriceMonitor.Views.HomeView"
-             Title="{Binding Title}" x:Name="HomeView">
+             x:Class="PetrolPriceMonitor.Views.SearchResultsView"
+             Title="{Binding Title}" x:Name="SearchResultsView">
   <ContentPage.Resources>
     <ResourceDictionary>
       <local:UrlToImageSource x:Key="UrlToImageSource"></local:UrlToImageSource>
     </ResourceDictionary>
   </ContentPage.Resources>
-  <ContentPage.ToolbarItems>
-    <ToolbarItem Name="Log Out" Command="{Binding LogOutCommand}" />
-  </ContentPage.ToolbarItems>
   <StackLayout>
     <Label Text="{Binding Heading}" />
-    <ListView x:Name="Favourites" ItemsSource="{Binding Favourites}" HasUnevenRows="True">
+    <ListView x:Name="Results" ItemsSource="{Binding Results}" HasUnevenRows="True">
       <ListView.ItemTemplate>
         <DataTemplate>
           <ViewCell>

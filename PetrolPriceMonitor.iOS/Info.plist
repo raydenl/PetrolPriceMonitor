@@ -48,5 +48,7 @@
 	<string>LaunchScreen</string>
 	<key>CFBundleShortVersionString</key>
 	<string></string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string></string>
 </dict>
 </plist>

@@ -68,8 +68,6 @@ namespace PetrolPriceMonitor.iOS.Services
             }
             catch (Exception ex)
             {
-
-
                 return new ErrorResponse(ErrorMessage.UnknownError);
             }
         }
@@ -90,6 +88,10 @@ namespace PetrolPriceMonitor.iOS.Services
         public async Task<IResponse> LogIn(string email, string password)
         {
             await System.Threading.Tasks.Task.Delay(10000);
+
+            //AmazonCognitoIdentityProviderClient client = new AmazonCognitoIdentityProviderClient();
+
+            //client.GetUserAsync(new GetUserRequest() { })
 
             return new SuccessResponse();
         }
@@ -122,15 +124,15 @@ namespace PetrolPriceMonitor.iOS.Services
                 }
                 else
                 {
-                    return new ErrorResponse(response.HttpStatusCode, "");
+                    return new ErrorResponse(response.HttpStatusCode, ErrorMessage.UnknownError);
                 }
             }
-            catch (Amazon.CognitoIdentityProvider.Model.InvalidParameterException ex) when (ex.Message.Contains("email"))
+            catch (InvalidParameterException ex) when (ex.Message.Contains("email"))
             {
                 // email validation error
                 return new ErrorResponse("");
             }
-            catch (Amazon.CognitoIdentityProvider.Model.InvalidParameterException ex) when (ex.Message.Contains("password"))
+            catch (InvalidParameterException ex) when (ex.Message.Contains("password"))
             {
                 // password validation error
                 return new ErrorResponse("");
@@ -145,10 +147,14 @@ namespace PetrolPriceMonitor.iOS.Services
                 // username exists error
                 return new ErrorResponse("");
             }
+            catch (LimitExceededException ex)
+            {
+                return new ErrorResponse(ErrorMessage.LimitExceeded);
+            }
             catch (Exception ex)
             {
                 // unknown error
-                return new ErrorResponse("");
+                return new ErrorResponse(ErrorMessage.UnknownError);
             }
         }
 
@@ -160,6 +166,50 @@ namespace PetrolPriceMonitor.iOS.Services
             }
 
             _credentials.Clear();
+        }
+
+        public async Task<IResponse> ForgotPassword(string email)
+        {
+            AmazonCognitoIdentityProviderConfig config = new AmazonCognitoIdentityProviderConfig();
+            config.RegionEndpoint = RegionEndpoint.USEast1;
+
+            AmazonCognitoIdentityProviderClient client = new AmazonCognitoIdentityProviderClient(_credentials, config);
+
+            var request = new ForgotPasswordRequest
+            {
+                ClientId = Authentication.UserPoolClientId,
+                Username = email
+            };
+            
+            try
+            {
+                var response = await client.ForgotPasswordAsync(request);
+
+                if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return new SuccessResponse();
+                }
+                else
+                {
+                    return new ErrorResponse(response.HttpStatusCode, ErrorMessage.UnknownError);
+                }
+            }
+            //catch(InvalidParameterException ex) when (ex.Message.Contains("there is no registered"))
+            //{
+            //    return new ErrorResponse("No registered user was found with that email address.");
+            //}
+            catch (ResourceNotFoundException ex) when (ex.Message.Contains("Username/client id combination not found"))
+            {
+                return new ErrorResponse("No registered user was found with that email address.");
+            }
+            catch (LimitExceededException ex)
+            {
+                return new ErrorResponse(ErrorMessage.LimitExceeded);
+            }
+            catch (Exception ex)
+            {
+                return new ErrorResponse(ErrorMessage.UnknownError);
+            }
         }
     }
 }

@@ -8,9 +8,9 @@ using Xamarin.Forms;
 
 namespace PetrolPriceMonitor.Views
 {
-    public partial class SearchView : ViewBase
+    public partial class ForgotPasswordView : ViewBase
     {
-        public SearchView()
+        public ForgotPasswordView()
         {
             InitializeComponent();
         }

@@ -3,7 +3,6 @@ using PetrolPriceMonitor.Factories;
 using PetrolPriceMonitor.Services;
 using PetrolPriceMonitor.ViewModels;
 using PetrolPriceMonitor.Views;
-using Xamarin.Forms;
 
 namespace PetrolPriceMonitor.Bootstrapping
 {
@@ -21,9 +20,11 @@ namespace PetrolPriceMonitor.Bootstrapping
             viewFactory.Register<LogInViewModel, LogInView>();
             viewFactory.Register<SignUpViewModel, SignUpView>();
             viewFactory.Register<HomeViewModel, HomeView>();
-            viewFactory.Register<RootViewModel, RootView>();
+            viewFactory.Register<TabViewModel, TabView>();
             viewFactory.Register<SearchViewModel, SearchView>();
+            viewFactory.Register<SearchResultsViewModel, SearchResultsView>();
             viewFactory.Register<ProfileViewModel, ProfileView>();
+            viewFactory.Register<ForgotPasswordViewModel, ForgotPasswordView>();
         }
 
         protected override void ConfigureApplication(IContainer container)

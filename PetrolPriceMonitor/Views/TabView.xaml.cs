@@ -8,9 +8,9 @@ using Xamarin.Forms;
 
 namespace PetrolPriceMonitor.Views
 {
-    public partial class RootView : TabbedPage
+    public partial class TabView : TabbedPage
     {
-        public RootView()
+        public TabView()
         {
             InitializeComponent();
         }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PetrolPriceMonitor.ViewModels
@@ -12,5 +9,9 @@ namespace PetrolPriceMonitor.ViewModels
         string Title { get; set; }
 
         void SetState<T>(Action<T> action) where T : class, IViewModel;
+
+        Task ViewAppearing();
+
+        Task ViewDisappearing();
     }
 }

@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace PetrolPriceMonitor.Views
 {
-    public partial class HomeView : ContentPage
+    public partial class HomeView : ViewBase
     {
         public HomeView()
         {

@@ -3,43 +3,38 @@ using PetrolPriceMonitor.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
-using Xamarin.Forms;
 using System.Threading.Tasks;
 
 namespace PetrolPriceMonitor.ViewModels
 {
-    public class HomeViewModel : ViewModelBase
+    public class SearchResultsViewModel : ViewModelBase
     {
         private INavigate _navigate;
         private IAuthenticate _authenticate;
         private IStationRepository _stationRepository;
 
-        public ICommand LogOutCommand { protected set; get; }
         public string Heading { protected set; get; }
-        private ObservableCollection<Station> _favourites;
-        public ObservableCollection<Station> Favourites
+        private ObservableCollection<Station> _results;
+        public ObservableCollection<Station> Results
         {
             set
             {
-                _favourites = value;
+                _results = value;
             }
             get
             {
-                return _favourites;
+                return _results;
             }
         }
 
-        public HomeViewModel(INavigate navigate, IAuthenticate authenticate, IStationRepository stationRepository)
+        public SearchResultsViewModel(INavigate navigate, IAuthenticate authenticate, IStationRepository stationRepository)
         {
-            Title = "Home";
-            Heading = "Favourites";
+            Title = "Search";
+            Heading = "Results";
 
             _navigate = navigate;
             _authenticate = authenticate;
             _stationRepository = stationRepository;
-
-            LogOutCommand = new Command(LogOut, CanLogOut);
         }
 
         async public override Task ViewAppearing()
@@ -63,16 +58,7 @@ namespace PetrolPriceMonitor.ViewModels
                 Price = f.Price
             });
 
-            SetProperty(ref _favourites, new ObservableCollection<Station>(favouritesVMs), () => Favourites);
+            SetProperty(ref _results, new ObservableCollection<Station>(favouritesVMs), () => Results);
         }
-
-        private void LogOut()
-        {
-            _authenticate.LogOut();
-
-            _navigate.PopModalAsync();
-        }
-
-        private bool CanLogOut() => true;
     }
 }

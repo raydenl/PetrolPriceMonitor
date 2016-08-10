@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<d:ViewBase xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PetrolPriceMonitor.Views.SearchView"
+             xmlns:d="clr-namespace:PetrolPriceMonitor.Views;assembly=PetrolPriceMonitor"
              Title="{Binding Title}">
-  
-</ContentPage>
+  <StackLayout>
+    <Button Text="Search" HorizontalOptions="Center" Command="{Binding SearchCommand}" />
+  </StackLayout>
+</d:ViewBase>

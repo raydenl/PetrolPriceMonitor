@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using PetrolPriceMonitor.Bootstrapping;
-
 using Xamarin.Forms;
 
 namespace PetrolPriceMonitor

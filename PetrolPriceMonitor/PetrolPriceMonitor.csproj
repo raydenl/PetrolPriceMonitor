@@ -41,23 +41,45 @@
     <Compile Include="Bootstrapping\Bootstrapper.cs" />
     <Compile Include="Constants\Authentication.cs" />
     <Compile Include="Constants\ErrorMessage.cs" />
+    <Compile Include="Constants\ErrorMessageTitle.cs" />
+    <Compile Include="Constants\MessageCenterMessage.cs" />
+    <Compile Include="Constants\TableName.cs" />
+    <Compile Include="Converters\UrlToImageSource.cs" />
+    <Compile Include="Extensions\NumericalExtensions.cs" />
     <Compile Include="Factories\IViewFactory.cs" />
     <Compile Include="Factories\ViewFactory.cs" />
+    <Compile Include="Models\DisplayAlertMessage.cs" />
     <Compile Include="Models\ErrorResponse.cs" />
+    <Compile Include="Models\GeoPoint.cs" />
     <Compile Include="Models\IResponse.cs" />
+    <Compile Include="Models\Station.cs" />
+    <Compile Include="Repositories\IStationRepository.cs" />
+    <Compile Include="Repositories\StationRepository.cs" />
+    <Compile Include="Services\ILocate.cs" />
+    <Compile Include="Services\LocationService.cs" />
+    <Compile Include="ViewModels\SearchResultsViewModel.cs" />
+    <Compile Include="ViewModels\Station.cs" />
     <Compile Include="Models\SuccessResponse.cs" />
     <Compile Include="Services\IAuthenticate.cs" />
+    <Compile Include="Services\IDisplayProgress.cs" />
     <Compile Include="Services\INavigate.cs" />
     <Compile Include="Services\NavigatorService.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\ProfileViewModel.cs" />
-    <Compile Include="ViewModels\RootViewModel.cs" />
+    <Compile Include="ViewModels\TabViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
+    <Compile Include="Views\SearchResultsView.xaml.cs">
+      <DependentUpon>SearchResultsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RootView.xaml.cs">
-      <DependentUpon>RootView.xaml</DependentUpon>
+    <Compile Include="Views\ForgotPasswordView.xaml.cs">
+      <DependentUpon>ForgotPasswordView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TabView.xaml.cs">
+      <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProfileView.xaml.cs">
       <DependentUpon>ProfileView.xaml</DependentUpon>
@@ -77,6 +99,7 @@
     <Compile Include="ViewModels\LogInViewModel.cs" />
     <Compile Include="ViewModels\SignUpViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\ViewBase.cs" />
     <Compile Include="Views\ViewLocatorPage.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -104,7 +127,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\RootView.xaml">
+    <EmbeddedResource Include="Views\TabView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -119,6 +142,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\ProfileView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ForgotPasswordView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SearchResultsView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
