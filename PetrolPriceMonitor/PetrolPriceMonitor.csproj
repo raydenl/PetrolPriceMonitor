@@ -45,11 +45,14 @@
     <Compile Include="Constants\MessageCenterMessage.cs" />
     <Compile Include="Constants\TableName.cs" />
     <Compile Include="Converters\UrlToImageSource.cs" />
+    <Compile Include="Enums\FuelType.cs" />
+    <Compile Include="Enums\StationType.cs" />
     <Compile Include="Extensions\NumericalExtensions.cs" />
     <Compile Include="Factories\IViewFactory.cs" />
     <Compile Include="Factories\ViewFactory.cs" />
     <Compile Include="Models\DisplayAlertMessage.cs" />
     <Compile Include="Models\ErrorResponse.cs" />
+    <Compile Include="Models\FuelOption.cs" />
     <Compile Include="Models\GeoPoint.cs" />
     <Compile Include="Models\IResponse.cs" />
     <Compile Include="Models\Station.cs" />

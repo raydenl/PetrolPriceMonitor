@@ -32,8 +32,7 @@
                   <ColumnDefinition Width="40" />
                 </Grid.ColumnDefinitions>
                 <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding LogoFilename, Converter={StaticResource UrlToImageSource}}" Aspect="AspectFit" />
-                <Label Grid.Row="0" Grid.Column="1" Text="{Binding CompanyName}" />
-                <Label Grid.Row="1" Grid.Column="1" Text="{Binding StationName}" />
+                <Label Grid.Row="0" Grid.Column="1" Text="{Binding StationName}" />
                 <Button Grid.Row="0" Grid.Column="2" Text="Yes" HorizontalOptions="Center" Command="{Binding ConfirmCommand}" />
                 <Button Grid.Row="0" Grid.Column="3" Text="No" HorizontalOptions="Center" Command="{Binding RejectCommand}" />
                 <Label Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Price}" />

@@ -1,4 +1,5 @@
-﻿using PetrolPriceMonitor.Repositories;
+﻿using PetrolPriceMonitor.Enums;
+using PetrolPriceMonitor.Repositories;
 using PetrolPriceMonitor.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -46,16 +47,23 @@ namespace PetrolPriceMonitor.ViewModels
         {
             var favouriteStationIds = new List<string>
             {
-                "F032D049-6893-49C4-8B1E-44EDE85455FA"
+                "BB873D34-94A4-48E2-94FF-7713C2050339"
             };
 
-            var favourites = _stationRepository.GetFavourites(favouriteStationIds.ToArray());
+            var favourites = _stationRepository.GetStationsByFuelType(
+                FuelType.Octane91,
+                favouriteStationIds.ToArray());
 
-            var favouritesVMs = (await favourites).Select(f => new Station
+            var favouritesVMs = (await favourites).Select(f =>
             {
-                CompanyName = f.CompanyName,
-                StationName = f.StationName,
-                Price = f.Price
+                var fuelOption = f.FuelOptions.FirstOrDefault();
+
+                return new Station
+                {
+                    StationName = f.Name,
+                    LogoFilename = string.Format("{0}.png", f.Type.ToString()),
+                    Price = fuelOption != null ? fuelOption.Price : (decimal?)null
+                };
             });
 
             SetProperty(ref _results, new ObservableCollection<Station>(favouritesVMs), () => Results);

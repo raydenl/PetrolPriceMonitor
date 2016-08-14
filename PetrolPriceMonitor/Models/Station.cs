@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PetrolPriceMonitor.Enums;
+using System;
+using System.Collections.Generic;
 
 namespace PetrolPriceMonitor.Models
 {
@@ -6,21 +8,28 @@ namespace PetrolPriceMonitor.Models
     {
         public Guid Id { protected set; get; }
 
-        public string CompanyName { protected set; get; }
+        public StationType Type { protected set; get; }
 
-        public string StationName { protected set; get; }
+        public string Name { protected set; get; }
 
-        public decimal Price { protected set; get; }
+        public string Address { protected set; get; }
 
-        public GeoPoint Location { protected set; get; }
+        public string Phone { protected set; get; }
         
-        public Station(Guid id, string companyName, string stationName, decimal price, double latitude, double longitude)
+        public GeoPoint Location { protected set; get; }
+
+        public List<FuelOption> FuelOptions { protected set; get; }
+        
+        public Station(Guid id, int type, string name, string address, string phone, double latitude, double longitude)
         {
             Id = id;
-            CompanyName = companyName;
-            StationName = stationName;
-            Price = price;
+            Type = (StationType)type;
+            Name = name;
+            Address = address;
+            Phone = phone;
             Location = new GeoPoint(latitude, longitude);
+
+            FuelOptions = new List<FuelOption>();
         }
     }
 }

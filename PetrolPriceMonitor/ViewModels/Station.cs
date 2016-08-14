@@ -9,17 +9,12 @@ namespace PetrolPriceMonitor.ViewModels
 
         public ICommand RejectCommand { protected set; get; }
 
-        public string CompanyName { set; get; }
+        public string LogoFilename { set; get; }
 
         public string StationName { set; get; }
             
-        public decimal Price { set; get; }
-
-        public string LogoFilename
-        {
-            get { return string.Format("{0}.png", CompanyName.Replace(" ", "-")); }
-        }
-
+        public decimal? Price { set; get; }
+        
         public Station()
         {
             ConfirmCommand = new Command(Confirm, CanConfirm);
