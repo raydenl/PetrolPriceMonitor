@@ -44,6 +44,7 @@
     <Compile Include="Constants\ErrorMessageTitle.cs" />
     <Compile Include="Constants\MessageCenterMessage.cs" />
     <Compile Include="Constants\TableName.cs" />
+    <Compile Include="Controls\BindablePicker.cs" />
     <Compile Include="Converters\UrlToImageSource.cs" />
     <Compile Include="Enums\FuelType.cs" />
     <Compile Include="Enums\StationType.cs" />
@@ -60,6 +61,8 @@
     <Compile Include="Repositories\StationRepository.cs" />
     <Compile Include="Services\ILocate.cs" />
     <Compile Include="Services\LocationService.cs" />
+    <Compile Include="ViewModels\Company.cs" />
+    <Compile Include="ViewModels\FuelOption.cs" />
     <Compile Include="ViewModels\SearchResultsViewModel.cs" />
     <Compile Include="ViewModels\Station.cs" />
     <Compile Include="Models\SuccessResponse.cs" />
