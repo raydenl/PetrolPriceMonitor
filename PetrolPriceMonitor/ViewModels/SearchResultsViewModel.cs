@@ -15,6 +15,11 @@ namespace PetrolPriceMonitor.ViewModels
         private IStationRepository _stationRepository;
 
         public string Heading { protected set; get; }
+
+        public Location SelectedLocation { set; get; }
+        public Company SelectedCompany { set; get; }
+        public FuelOption SelectedFuelOption { set; get; }
+
         private ObservableCollection<Station> _results;
         public ObservableCollection<Station> Results
         {

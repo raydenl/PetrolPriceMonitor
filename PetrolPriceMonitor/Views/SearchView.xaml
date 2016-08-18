@@ -3,17 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PetrolPriceMonitor.Views.SearchView"
              xmlns:d="clr-namespace:PetrolPriceMonitor.Views;assembly=PetrolPriceMonitor"
+             xmlns:local="clr-namespace:PetrolPriceMonitor.Converters;assembly=PetrolPriceMonitor"
              xmlns:c="clr-namespace:PetrolPriceMonitor.Controls;assembly=PetrolPriceMonitor"
              Title="{Binding Title}">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <local:InverseBoolean x:Key="InverseBoolean"></local:InverseBoolean>
+    </ResourceDictionary>
+  </ContentPage.Resources>
   <StackLayout>
     <Label Text="Location" />
-    <Entry Text="{Binding Location}" />
+    <SearchBar Placeholder="{Binding AddressPlaceholder}" Text="{Binding Address}" SearchCommand="{Binding AddressSearchCommand}" IsEnabled="{Binding UseCurrentLocation, Converter={StaticResource InverseBoolean}}" />
     <Label Text="Use current location" />
     <Switch IsToggled="{Binding UseCurrentLocation}" />
     <Label Text="Company" />
-    <c:BindablePicker ItemsSource="{Binding Companies}" SelectedValue="{Binding SelectedCompany}" DisplayMemberPath="CompanyName" />
+    <c:BindablePicker ItemsSource="{Binding Companies}" SelectedItem="{Binding SelectedCompany}" DisplayMemberPath="CompanyName" />
     <Label Text="Fuel Type" />
-    <c:BindablePicker ItemsSource="{Binding FuelOptions}" SelectedValue="{Binding SelectedFuelOption}" DisplayMemberPath="FuelOptionName" />
+    <c:BindablePicker ItemsSource="{Binding FuelOptions}" SelectedItem="{Binding SelectedFuelOption}" DisplayMemberPath="FuelOptionName" />
     <Button Text="Search" HorizontalOptions="Center" Command="{Binding SearchCommand}" />
   </StackLayout>
 </d:ViewBase>

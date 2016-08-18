@@ -9,6 +9,8 @@ namespace PetrolPriceMonitor.Services
 {
     public interface ILocate
     {
+        Task<GeoPoint> GetCurrentLocation();
+
         Task<IEnumerable<Station>> GetStationsWithinRadius(IEnumerable<Station> stations, int kilometreRadius);
     }
 }

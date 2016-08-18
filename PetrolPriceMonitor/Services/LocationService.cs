@@ -19,6 +19,30 @@ namespace PetrolPriceMonitor.Services
             _locator.AllowsBackgroundUpdates = false;
         }
 
+        async public Task<GeoPoint> GetCurrentLocation()
+        {
+            try
+            {
+                var position = await Task.Run(() => new { Latitide = -42.45278d, Longitude = 171.209269d }); //await _locator.GetPositionAsync();
+
+                await Task.Delay(TimeSpan.FromSeconds(5));
+
+                return new GeoPoint(position.Latitide, position.Longitude);
+            }
+            catch (GeolocationException ex) when (ex.Error == GeolocationError.PositionUnavailable)
+            {
+                return null;
+            }
+            catch (GeolocationException ex) when (ex.Error == GeolocationError.Unauthorized)
+            {
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         /// <summary>
         /// Gets stations that lie within a kilometre radius of the current location.
         /// </summary>
@@ -29,7 +53,10 @@ namespace PetrolPriceMonitor.Services
         {
             try
             {
-                var position = await Task.Run(() => new { Latitide = 100d, Longitude = 20d }); //await _locator.GetPositionAsync();
+                var position = await Task.Run(() => new { Latitide = -42.45278d, Longitude = 171.209269d }); //await _locator.GetPositionAsync();
+
+                await Task.Delay(TimeSpan.FromSeconds(5));
+
                 var currentLocation = new GeoPoint(position.Latitide, position.Longitude);
 
                 var stationsInRadius = new List<Station>();
