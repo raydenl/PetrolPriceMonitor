@@ -8,6 +8,8 @@ namespace PetrolPriceMonitor.ViewModels
 {
     public abstract class ViewModelBase : IViewModel
     {
+        private bool _disabled;
+
         public string Title { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -17,6 +19,23 @@ namespace PetrolPriceMonitor.ViewModels
             action(this as T);
         }
 
+        protected void Togglable(Action action)
+        {
+            if (!_disabled)
+            {
+                action();
+            }
+        }
+
+        protected void ToggleOff(Action action)
+        {
+            _disabled = true;
+            
+            action();
+
+            _disabled = false;
+        }
+        
         protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (Equals(storage, value)) return false;
@@ -48,7 +67,7 @@ namespace PetrolPriceMonitor.ViewModels
 
             OnPropertyChanged(propertyName);
         }
-
+        
         async public virtual Task ViewAppearing()
         {
             await Task.Delay(0);

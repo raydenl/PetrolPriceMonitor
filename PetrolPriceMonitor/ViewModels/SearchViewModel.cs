@@ -1,7 +1,11 @@
-﻿using PetrolPriceMonitor.Constants;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using PetrolPriceMonitor.Constants;
+using PetrolPriceMonitor.Models;
 using PetrolPriceMonitor.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Dynamic;
 using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -13,8 +17,10 @@ namespace PetrolPriceMonitor.ViewModels
         private INavigate _navigator;
         private ILocate _locator;
         private IDisplayProgress _progress;
+        private IConsume _consumer;
 
         private Location _location;
+        private string _placeId;
 
         public ICommand SearchCommand { protected set; get; }
         public ICommand AddressSearchCommand { protected set; get; }
@@ -25,7 +31,28 @@ namespace PetrolPriceMonitor.ViewModels
             get { return _address; }
             set
             {
-                _address = value;
+                if (!Equals(_address, value))
+                {
+                    _address = value;
+
+                    OnPropertyChanged(() => Address);
+
+                    Togglable(() => PopulateAddresses());
+                }
+            }
+        }
+        private ObservableCollection<Address> _addresses;
+        public ObservableCollection<Address> Addresses
+        {
+            get { return _addresses; }
+            set
+            {
+                if (!Equals(_addresses, value))
+                {
+                    _addresses = value;
+
+                    OnPropertyChanged(() => Addresses);
+                }
             }
         }
         private string _addressPlaceholder;
@@ -34,7 +61,12 @@ namespace PetrolPriceMonitor.ViewModels
             get { return _addressPlaceholder; }
             set
             {
-                _addressPlaceholder = value;
+                if (!Equals(_addressPlaceholder, value))
+                {
+                    _addressPlaceholder = value;
+
+                    OnPropertyChanged(() => AddressPlaceholder);
+                }
             }
         }
         private bool _useCurrentLocation;
@@ -43,29 +75,66 @@ namespace PetrolPriceMonitor.ViewModels
             get { return _useCurrentLocation; }
             set
             {
-                _useCurrentLocation = value;
+                if (!Equals(_useCurrentLocation, value))
+                {
+                    _useCurrentLocation = value;
 
-                OnPropertyChanged(() => UseCurrentLocation);
+                    OnPropertyChanged(() => UseCurrentLocation);
 
-                if (value)
-                    SetCurrentLocation();
-                else
-                    ClearCurrentLocation();
+                    if (value)
+                        SetCurrentLocation();
+                    else
+                        ClearCurrentLocation();
+                }
             }
         }
+
+        private bool _isSearchBarFocused;
+        public bool IsSearchBarFocused
+        {
+            get { return _isSearchBarFocused; }
+            set
+            {
+                if (!Equals(_isSearchBarFocused, value))
+                {
+                    _isSearchBarFocused = value;
+
+                    OnPropertyChanged(() => IsSearchBarFocused);
+                }
+            }
+        }
+
         public Company SelectedCompany { get; set; }
         public FuelOption SelectedFuelOption { get; set; }
+
+        private Address _selectedAddress;
+        public Address SelectedAddress
+        {
+            get { return _selectedAddress; }
+            set
+            {
+                if (!Equals(_selectedAddress, value))
+                {
+                    _selectedAddress = value;
+
+                    OnPropertyChanged(() => SelectedAddress);
+
+                    SetAddress();
+                }
+            }
+        }
 
         public ObservableCollection<Company> Companies { protected set; get; }
         public ObservableCollection<FuelOption> FuelOptions { protected set; get; }
 
-        public SearchViewModel(INavigate navigator, ILocate locator, IDisplayProgress progress)
+        public SearchViewModel(INavigate navigator, ILocate locator, IDisplayProgress progress, IConsume consumer)
         {
             Title = "Search";
 
             _navigator = navigator;
             _locator = locator;
             _progress = progress;
+            _consumer = consumer;
             
             SearchCommand = new Command(Search, CanSearch);
             AddressSearchCommand = new Command(AddressSearch, CanAddressSearch);
@@ -100,6 +169,10 @@ namespace PetrolPriceMonitor.ViewModels
 
             SelectedCompany = companies.First();
             SelectedFuelOption = fuelOptions.First();
+
+            Addresses = new ObservableCollection<Address>(new List<Address>());
+
+            IsSearchBarFocused = true;
         }
         
         private void Search()
@@ -108,39 +181,36 @@ namespace PetrolPriceMonitor.ViewModels
                 vm.SelectedLocation = _location;
                 vm.SelectedCompany = SelectedCompany;
                 vm.SelectedFuelOption = SelectedFuelOption;
+                vm.SelectedPlaceId = _placeId;
             });
         }
 
         private void AddressSearch()
         {
-            SetLocation();
+            PopulateAddresses();
         }
 
-        async private void SetLocation()
+        private void SetAddress()
         {
-            _progress.Show(ProgressMessage.Working);
-
-            var location = await _locator.GetCurrentLocation();
+            _placeId = SelectedAddress.PlaceId;
             
-            _progress.Hide();
+            Addresses = new ObservableCollection<Address>(new List<Address>());
 
-            _location = new Location
-            {
-                Latitude = location.Latitude,
-                Longitude = location.Longitude
-            };
+            ToggleOff(() => Address = SelectedAddress.DisplayName);
+
+            IsSearchBarFocused = false;
         }
         
         async private void SetCurrentLocation()
         {
             _progress.Show(ProgressMessage.Working);
 
-            SetProperty(ref _address, null, () => Address);
-            SetProperty(ref _addressPlaceholder, "Locating...", () => AddressPlaceholder);
+            Address = null;
+            AddressPlaceholder = "Locating...";
 
             var location = await _locator.GetCurrentLocation();
             
-            SetProperty(ref _addressPlaceholder, "Current Location", () => AddressPlaceholder);
+            AddressPlaceholder = "Current Location";
             
             _progress.Hide();
 
@@ -151,9 +221,32 @@ namespace PetrolPriceMonitor.ViewModels
             };
         }
 
+        async private void PopulateAddresses()
+        {
+            var settings = new JsonSerializerSettings();
+            settings.MissingMemberHandling = MissingMemberHandling.Ignore;
+
+            var results = await _consumer.GetAsync<AddressPrediction>(RestUrl.GooglePlaceAutocomplete(Address, "address", "en-AU", "country:nz", Authentication.GoogleApiKey), settings);
+
+            var predictions = results.Predictions;
+
+            var addresses = new List<Address>();
+
+            foreach (var prediction in predictions)
+            {
+                addresses.Add(new Address
+                {
+                    DisplayName = prediction.Description,
+                    PlaceId = prediction.PlaceId
+                });
+            }
+
+            Addresses = new ObservableCollection<Address>(addresses);
+        }
+
         private void ClearCurrentLocation()
         {
-            SetProperty(ref _addressPlaceholder, "Enter an address", () => AddressPlaceholder);
+            AddressPlaceholder = "Enter an address";
         }
         
         private bool CanSearch() => true;

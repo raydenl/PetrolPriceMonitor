@@ -44,8 +44,10 @@
     <Compile Include="Constants\ErrorMessageTitle.cs" />
     <Compile Include="Constants\MessageCenterMessage.cs" />
     <Compile Include="Constants\ProgressMessage.cs" />
+    <Compile Include="Constants\RestUrl.cs" />
     <Compile Include="Constants\TableName.cs" />
     <Compile Include="Controls\BindablePicker.cs" />
+    <Compile Include="Converters\HasRowsIsVisible.cs" />
     <Compile Include="Converters\InverseBoolean.cs" />
     <Compile Include="Converters\UrlToImageSource.cs" />
     <Compile Include="Enums\FuelType.cs" />
@@ -53,6 +55,7 @@
     <Compile Include="Extensions\NumericalExtensions.cs" />
     <Compile Include="Factories\IViewFactory.cs" />
     <Compile Include="Factories\ViewFactory.cs" />
+    <Compile Include="Models\AddressPrediction.cs" />
     <Compile Include="Models\DisplayAlertMessage.cs" />
     <Compile Include="Models\ErrorResponse.cs" />
     <Compile Include="Models\FuelOption.cs" />
@@ -61,8 +64,12 @@
     <Compile Include="Models\Station.cs" />
     <Compile Include="Repositories\IStationRepository.cs" />
     <Compile Include="Repositories\StationRepository.cs" />
+    <Compile Include="Services\IConsume.cs" />
     <Compile Include="Services\ILocate.cs" />
     <Compile Include="Services\LocationService.cs" />
+    <Compile Include="Services\RestService.cs" />
+    <Compile Include="TriggerActions\FocusTriggerAction.cs" />
+    <Compile Include="ViewModels\Address.cs" />
     <Compile Include="ViewModels\Company.cs" />
     <Compile Include="ViewModels\FuelOption.cs" />
     <Compile Include="ViewModels\Location.cs" />
@@ -167,6 +174,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

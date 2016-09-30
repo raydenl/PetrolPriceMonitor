@@ -52,7 +52,7 @@ namespace PetrolPriceMonitor.Views
 
             }, Application.Current);
         }
-
+        
         private void UnsubscribeDisplayAlert()
         {
             MessagingCenter.Unsubscribe<Application, DisplayAlertMessage>(this, MessageCenterMessage.ShowAlert);

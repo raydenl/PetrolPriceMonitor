@@ -3,17 +3,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PetrolPriceMonitor.Views.SearchView"
              xmlns:d="clr-namespace:PetrolPriceMonitor.Views;assembly=PetrolPriceMonitor"
-             xmlns:local="clr-namespace:PetrolPriceMonitor.Converters;assembly=PetrolPriceMonitor"
+             xmlns:converters="clr-namespace:PetrolPriceMonitor.Converters;assembly=PetrolPriceMonitor"
+             xmlns:triggers="clr-namespace:PetrolPriceMonitor.TriggerActions;assembly=PetrolPriceMonitor"
              xmlns:c="clr-namespace:PetrolPriceMonitor.Controls;assembly=PetrolPriceMonitor"
              Title="{Binding Title}">
   <ContentPage.Resources>
     <ResourceDictionary>
-      <local:InverseBoolean x:Key="InverseBoolean"></local:InverseBoolean>
+      <converters:InverseBoolean x:Key="InverseBoolean"></converters:InverseBoolean>
+      <converters:HasRowsIsVisible x:Key="HasRowsIsVisible"></converters:HasRowsIsVisible>
+      <Style TargetType="SearchBar">
+        <Style.Triggers>
+          <DataTrigger TargetType="SearchBar" Binding="{Binding Source={x:Reference Name=searchBar}, Path=IsSearchBarFocused}" Value="True">
+          <Trigger.EnterActions>
+            <triggers:FocusTriggerAction Focused="True" />
+          </Trigger.EnterActions>
+          <Trigger.ExitActions>
+            <triggers:FocusTriggerAction Focused="False" />
+          </Trigger.ExitActions>
+        </DataTrigger>
+        </Style.Triggers>
+      </Style>
     </ResourceDictionary>
   </ContentPage.Resources>
   <StackLayout>
     <Label Text="Location" />
-    <SearchBar Placeholder="{Binding AddressPlaceholder}" Text="{Binding Address}" SearchCommand="{Binding AddressSearchCommand}" IsEnabled="{Binding UseCurrentLocation, Converter={StaticResource InverseBoolean}}" />
+    <SearchBar x:Name="searchBar" Placeholder="{Binding AddressPlaceholder}" Text="{Binding Address}" SearchCommand="{Binding AddressSearchCommand}" IsEnabled="{Binding UseCurrentLocation, Converter={StaticResource InverseBoolean}}">
+    </SearchBar>  
+    <ListView ItemsSource="{Binding Addresses}" SelectedItem="{Binding SelectedAddress, Mode=TwoWay}" HasUnevenRows="True" IsVisible="{Binding Addresses.Count, Converter={StaticResource HasRowsIsVisible}}">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <ViewCell>
+            <ViewCell.View>
+              <Label Text="{Binding DisplayName}" />
+            </ViewCell.View>  
+          </ViewCell>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
     <Label Text="Use current location" />
     <Switch IsToggled="{Binding UseCurrentLocation}" />
     <Label Text="Company" />

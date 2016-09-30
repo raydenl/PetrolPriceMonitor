@@ -26,6 +26,10 @@ namespace PetrolPriceMonitor.Bootstrapping
                 .As<ILocate>()
                 .SingleInstance();
 
+            builder.RegisterType<RestService>()
+                .As<IConsume>()
+                .SingleInstance();
+
             // navigation registration
             builder.Register(context =>
                 Application.Current.MainPage.Navigation
